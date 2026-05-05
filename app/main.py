@@ -28,15 +28,23 @@ def health():
     return jsonify({"status": "healthy"}), 200
 
 
-@app.route("/api/sum/<int:a>/<int:b>")
+@app.route("/api/sum/<a>/<b>")
 def sum_numbers(a, b):
     """Tiny piece of business logic to give the test suite something real to verify."""
-    return jsonify({"a": a, "b": b, "result": a + b})
+    try:
+        a_int, b_int = int(a), int(b)
+    except ValueError:
+        return jsonify({"error": "a and b must be integers"}), 400
+    return jsonify({"a": a_int, "b": b_int, "result": a_int + b_int})
 
 
-@app.route("/api/multiply/<int:a>/<int:b>")
+@app.route("/api/multiply/<a>/<b>")
 def multiply_numbers(a, b):
-    return jsonify({"a": a, "b": b, "result": a * b})
+    try:
+        a_int, b_int = int(a), int(b)
+    except ValueError:
+        return jsonify({"error": "a and b must be integers"}), 400
+    return jsonify({"a": a_int, "b": b_int, "result": a_int * b_int})
 
 
 if __name__ == "__main__":
