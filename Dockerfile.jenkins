@@ -1,0 +1,32 @@
+# =============================================================================
+# Custom Jenkins controller image for SE4206.
+#
+# Why we need this: the official jenkins/jenkins image does NOT ship with
+# Docker CLI or Python3. Our pipeline needs both:
+#   - Python3  -> for the Build/Test stages (pytest)
+#   - Docker   -> for the Package/Deploy stages (build + run images)
+#
+# We mount the host's Docker socket at runtime (see docker-compose.yml), so
+# Jenkins uses the *host* Docker daemon - we only need the CLI here.
+# =============================================================================
+
+FROM jenkins/jenkins:lts-jdk17
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        docker.io \
+        python3 \
+        python3-pip \
+        python3-venv \
+        curl \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# Allow the 'jenkins' user to talk to /var/run/docker.sock when it is mounted.
+# Group ID 999 typically matches the host 'docker' group on Ubuntu/Debian.
+# If your host uses a different GID, adjust this and rebuild.
+RUN groupadd -f -g 999 docker && usermod -aG docker jenkins
+
+USER jenkins
