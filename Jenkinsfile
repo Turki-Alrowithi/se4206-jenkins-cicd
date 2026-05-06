@@ -128,12 +128,9 @@ pipeline {
             echo "🔎 Try: curl http://localhost:${APP_PORT}/api/sum/10/20"
         }
         failure {
-            echo "❌ Pipeline #${BUILD_NUMBER} failed. Rolling back..."
-            sh '''
-                docker stop ${CONTAINER_NAME} 2>/dev/null || true
-                docker rm   ${CONTAINER_NAME} 2>/dev/null || true
-            '''
-        }
+    echo "❌ Pipeline #${BUILD_NUMBER} failed. Previous deployment is preserved."
+    echo "   The running container ${CONTAINER_NAME} was NOT touched."
+}
         always {
             echo "🧹 Cleaning workspace..."
             cleanWs()
