@@ -47,11 +47,11 @@ def test_multiply(client):
     assert response.get_json()["result"] == 20
 
 
-# ---------------------------------------------------------------------------
-# DEMO TIP: To prove the pipeline really stops on test failure, uncomment
-# the test below in your live demo. Jenkins will fail at the 'Test' stage
-# and the 'Package' / 'Deploy' stages will never execute.
-# ---------------------------------------------------------------------------
-# def test_intentional_failure_for_demo(client):
-#     response = client.get("/api/sum/2/2")
-#     assert response.get_json()["result"] == 5  # 2+2 != 5 -> FAILS on purpose
+ #---------------------------------------------------------------------------
+ #DEMO TIP: To prove the pipeline really stops on test failure, uncomment
+ #the test below in your live demo. Jenkins will fail at the 'Test' stage
+ #and the 'Package' / 'Deploy' stages will never execute.
+ #---------------------------------------------------------------------------
+def test_intentional_failure_for_demo(client):
+     response = client.get("/api/sum/2/2")
+     assert response.get_json()["result"] == 5  # 2+2 != 5 -> FAILS on purpose
