@@ -3,6 +3,8 @@ Unit tests for the Flask app.
 Run locally with:    pytest app/tests/ -v
 Jenkins runs them in the 'Test' stage.
 """
+from urllib import response
+
 import pytest
 from app.main import app
 
@@ -52,6 +54,6 @@ def test_multiply(client):
  #the test below in your live demo. Jenkins will fail at the 'Test' stage
  #and the 'Package' / 'Deploy' stages will never execute.
  #---------------------------------------------------------------------------
-#def test_intentional_failure_for_demo(client):
- #    response = client.get("/api/sum/2/2")
-  #   assert response.get_json()["result"] == 5  # 2+2 != 5 -> FAILS on purpose
+def test_intentional_failure_for_demo(client):
+    response = client.get("/api/sum/2/2")
+    assert response.get_json()["result"] == 5  # 2+2 != 5 -> FAILS on purpose
